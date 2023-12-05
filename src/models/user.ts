@@ -1,42 +1,20 @@
-import { GENDER, ROLE, STATUS_USER } from "constants/user";
-import { IModify, IOTP, Modify, OTP } from "interfaces/basic";
-import {
-  Address,
-  IMembership,
-  ISearchProduct,
-  HistorySearch,
-  IAddress,
-  Membership,
-} from "interfaces/user";
-import { IVoucherUser, VoucherUser } from "interfaces/voucher";
+import { ROLE } from "constants/user";
+import { Author, IAuthor } from "interfaces/author";
 import { Schema, model, Document } from "mongoose";
 
 /*********************TYPE & INTERFACE*****************************/
 
 export type IUser = {
   email: string;
-  password: string;
-  full_name: string;
-  phone: string;
-  avatar: string;
-  cover_image: string;
-  gender: GENDER;
-  birthday: string;
-  addresses: IAddress[];
-  status: STATUS_USER;
-  favorite_products: string[];
-  recently_products: string[];
-  otp: IOTP;
+  passwordHash: string;
   access_token: string;
   refresh_token: string;
   role: ROLE;
-  membership: IMembership;
-  vouchers: IVoucherUser[];
-  history_search: ISearchProduct[];
-  created_at: string;
-  created_by: string;
-  modify: IModify[];
+  created_at: Date;
+  update_at: Date;
   device_id: string;
+  last_login: Date;
+  author: IAuthor | null;
 };
 
 export type UserTypeModel = IUser & Document;
@@ -44,42 +22,16 @@ export type UserTypeModel = IUser & Document;
 /*******************************SCHEMA*****************************/
 
 export const userSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-  },
-  password: { type: String },
-  full_name: { type: String, default: "" },
-  phone: { type: String, default: "" },
-  avatar: { type: String, default: "" },
-  cover_image: { type: String, default: "" },
-  gender: { type: String, enum: GENDER, default: GENDER.male },
-  birthday: { type: String, default: "" },
-  addresses: [Address],
-  status: { type: String, enum: STATUS_USER, default: STATUS_USER.pending },
-  favorite_products: { type: [Schema.Types.ObjectId], ref: "Product" },
-  recently_products: { type: [Schema.Types.ObjectId], ref: "Product" },
-  otp: { type: OTP, default: {} },
+  email: { type: String, unique: true },
+  passwordHash: { type: String },
   access_token: { type: String },
   refresh_token: { type: String },
-  role: { type: String, default: "user" },
-  membership: {
-    type: Membership,
-    default: {
-      name: "Basic",
-      description: "You are a basic member, buy more to get more benefits",
-      point: 0,
-    },
-  },
-  vouchers: [VoucherUser],
-  history_search: [HistorySearch],
-  created_at: { type: String },
-  created_by: { type: String },
-  modify: [Modify],
+  role: { type: String, enum: ROLE, default: ROLE.user },
+  created_at: { type: Date, default: Date.now },
+  update_at: { type: Date, default: Date.now },
   device_id: { type: String },
+  last_login: { type: Date },
+  author: { type: Author, default: null },
 });
 
 const User = model<UserTypeModel>("User", userSchema);

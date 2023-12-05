@@ -1,20 +1,9 @@
 import express, { Response } from "express";
 import mongoose from "mongoose";
 import userRouter from "routes/user";
-import productRouter from "routes/product";
-import authRouter from "routes/auth";
+import postRouter from "routes/post";
 import categoryRouter from "routes/category";
-import orderRouter from "routes/order";
-import colorRouter from "routes/color";
-import sizeRouter from "routes/size";
-import cartRouter from "routes/cart";
-import ratingRouter from "routes/rating";
-import uploadRouter from "routes/upload";
-import payRouter from "routes/pay";
-import voucherRouter from "routes/voucher";
-import dashboardRouter from "routes/dashboard";
-import notificationRouter from "routes/notification";
-import cmsRouter from "routes/cms";
+import authRouter from "routes/auth";
 import { config } from "dotenv";
 import Log from "libraries/log";
 import cors from "cors";
@@ -34,7 +23,6 @@ mongoose
   .connect(process.env.MONGODB_URI || "", { retryWrites: true, w: "majority" })
   .then(() => {
     Log.success("✅ Mongo connected successfully.");
-    console.log("Connected to Mongo");
   })
   .catch((error) => Log.error("❌ " + error));
 
@@ -50,20 +38,9 @@ app.use(nocache());
 
 /* Routes */
 app.use("/users", userRouter);
-// app.use("/products", productRouter);
-// app.use("/categories", categoryRouter);
+app.use("/posts", postRouter);
+app.use("/categories", categoryRouter);
 app.use("/auth", authRouter);
-// app.use("/colors", colorRouter);
-// app.use("/sizes", sizeRouter);
-// app.use("/orders", orderRouter);
-// app.use("/carts", cartRouter);
-// app.use("/upload", uploadRouter);
-// app.use("/pay", payRouter);
-// app.use("/voucher", voucherRouter);
-// app.use("/dashboard", dashboardRouter);
-// app.use("/ratings", ratingRouter);
-// app.use("/notification", notificationRouter);
-// app.use("/cms/products", cmsRouter);
 
 app.get("/ping", (req, res: Response) => {
   res.status(200).json({

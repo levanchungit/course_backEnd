@@ -9,15 +9,14 @@ const updateCategory = async (req: Request, res: Response) => {
     const id_user = getIdFromReq(req);
     const { id } = req.params;
     const user = await User.findById(id_user);
-    const { name, description }: ICategory = req.body;
+    const { name }: ICategory = req.body;
     const category = await Category.findById(id);
 
     if (!category) return res.sendStatus(404);
     if (!user) return res.sendStatus(403);
 
-    const validateFieldsResult = validateFields({ name, description }, [
+    const validateFieldsResult = validateFields({ name }, [
       { name: "name", type: "string", required: true },
-      { name: "description", type: "string", required: true },
     ]);
     if (validateFieldsResult)
       return res.status(400).json({ message: validateFieldsResult });
@@ -31,21 +30,13 @@ const updateCategory = async (req: Request, res: Response) => {
 
     const fieldsEdited = [];
     if (name !== category.name) fieldsEdited.push("name");
-    if (description !== category.description) fieldsEdited.push("description");
 
     if (!fieldsEdited.length) return res.sendStatus(304);
 
     const newCategory: ICategory = {
       ...category.toObject(),
       name: name ?? category.name,
-      description: description ?? category.description,
-      modify: [
-        ...category.modify,
-        {
-          action: `Update fields: ${fieldsEdited.join(", ")} by ${user.email}`,
-          date: getNow(),
-        },
-      ],
+      update_at: new Date(),
     };
 
     await category.set(newCategory).save();

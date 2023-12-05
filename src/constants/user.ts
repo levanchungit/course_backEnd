@@ -1,17 +1,5 @@
-export enum GENDER {
-  male = "male",
-  female = "female",
-  other = "other",
-}
-
-export enum STATUS_USER {
-  active = "active",
-  inactive = "inactive",
-  pending = "pending",
-}
-
 export enum ROLE {
   user = "user",
+  author = "author",
   admin = "admin",
-  staff = "staff",
 }

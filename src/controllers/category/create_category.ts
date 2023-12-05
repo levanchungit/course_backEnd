@@ -8,10 +8,9 @@ const createCategory = async (req: Request, res: Response) => {
   try {
     const user_id = getIdFromReq(req);
     const user = await User.findById(user_id);
-    const { name, description }: ICategory = req.body;
-    const validateFieldsResult = validateFields({ name, description }, [
+    const { name }: ICategory = req.body;
+    const validateFieldsResult = validateFields({ name }, [
       { name: "name", type: "string", required: true },
-      { name: "description", type: "string", required: true },
     ]);
     if (validateFieldsResult) {
       return res.status(400).json({ message: validateFieldsResult });
@@ -25,10 +24,8 @@ const createCategory = async (req: Request, res: Response) => {
     }
     const category = new Category({
       name,
-      description,
       created_at: getNow(),
-      created_by: user.email,
-      modify: [{ action: `Create by ${user.email}`, date: getNow() }],
+      updated_at: getNow(),
     });
     await category.save();
     return res.status(201).json({ id: category._id });
