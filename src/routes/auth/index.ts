@@ -1,4 +1,4 @@
-import { getMe, login, logout, refreshToken } from "controllers/auth";
+import { login, logout, refreshToken } from "controllers/auth";
 import { Router } from "express";
 import { validateToken } from "middleware/validate";
 

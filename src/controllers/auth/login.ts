@@ -26,7 +26,6 @@ const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Password is invalid" });
     }
     const contentToken = { _id: user.id, role: user.role };
-    console.log("contentToken", contentToken);
     const access_token = tokenGen(
       contentToken,
       parseInt(<string>process.env.EXPIRED_ACCESS_TOKEN)
@@ -38,7 +37,6 @@ const login = async (req: Request, res: Response) => {
     user.access_token = access_token;
     user.refresh_token = refresh_token;
     if (device_id != "") user.device_id = device_id;
-    console.log("user", user);
     await user.save();
     return res.status(200).json({
       message: "Login success",

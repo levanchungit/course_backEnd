@@ -1,15 +1,7 @@
 import { Response } from "express";
 import Log from "libraries/log";
-import User from "models/user";
 import { Types } from "mongoose";
 import nodemailer from "nodemailer";
-import { getNow, getNowPlusMinute } from "utils/common";
-
-type AccountVerifyType = {
-  email?: string;
-  phone?: string;
-  res: Response;
-};
 
 const sendMail = (
   user_id: Types.ObjectId,

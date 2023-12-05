@@ -13,7 +13,7 @@ const getPosts = async (req: Request, res: Response) => {
       .sort(sort)
       .limit(limit)
       .skip(startIndex);
-    console.log(posts);
+
     const results = {
       total: total,
       page: page,

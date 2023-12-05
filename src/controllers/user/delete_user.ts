@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import User from "models/user";
-import { getNow, validateFields } from "utils/common";
 
 const deleteUser = async (req: Request, res: Response) => {
   try {
