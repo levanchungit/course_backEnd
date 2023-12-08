@@ -27,6 +27,7 @@ mongoose
   .catch((error) => Log.error("❌ " + error));
 
 app.use(cors());
+app.set("Access-Control-Allow-Origin", "*");
 // Body parser configuration
 // Express 4.0
 app.use(bodyParser.json({ limit: "10mb" }));
