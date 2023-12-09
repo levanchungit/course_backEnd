@@ -9,7 +9,8 @@
     "build": "react-scripts build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "check": "tsc --noEmit",
-    "vercel-build": "echo Build vercel successfully"
+    "vercel-build": "echo Build vercel successfully",
+    "vercel": "npm run build && mv build public"
   },
   "dependencies": {
     "@types/multer": "^1.4.11",
