@@ -1,6 +1,10 @@
 {
     "rewrites": [
         {
+            "source": "/(.*)",
+            "destination": "/$1"
+        },
+        {
             "source": "api/ping(.*)",
             "destination": "api/ping$1"
         },
