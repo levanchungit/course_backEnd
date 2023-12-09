@@ -4,13 +4,11 @@
   "private": true,
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "build": "rm -rf dist && tsc -p tsconfig.json && mv dist/ public",
+    "start": "rm -rf dist && tsc -p tsconfig.json && tsc-alias -p tsconfig.json && node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "react-scripts build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "check": "tsc --noEmit",
-    "vercel-build": "echo Build vercel successfully",
-    "vercel": "npm run build && mv build public"
+    "check": "tsc --noEmit"
   },
   "dependencies": {
     "@types/multer": "^1.4.11",
