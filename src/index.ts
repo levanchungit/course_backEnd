@@ -38,10 +38,10 @@ app.use(helmet());
 app.use(nocache());
 
 /* Routes */
-app.use("/users", userRouter);
-app.use("/posts", postRouter);
-app.use("/categories", categoryRouter);
-app.use("/auth", authRouter);
+app.use("/api/users", userRouter);
+app.use("/api/posts", postRouter);
+app.use("/api/categories", categoryRouter);
+app.use("/api/auth", authRouter);
 
 app.get("/ping", (req, res: Response) => {
   res.status(200).json({
@@ -57,3 +57,5 @@ app.use((req, res) => {
 app.listen(port, () => {
   Log.success(`Server is running on port ${port}`);
 });
+
+export default app;
