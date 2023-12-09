@@ -1,12 +1,8 @@
 {
     "rewrites": [
         {
-            "source": "/(.*)",
-            "destination": "/$1"
-        },
-        {
-            "source": "api/ping(.*)",
-            "destination": "api/ping$1"
+            "source": "/api/ping",
+            "destination": "/api/ping"
         },
         {
             "source": "/api/auth(.*)",
@@ -15,6 +11,10 @@
         {
             "source": "/api/posts(.*)",
             "destination": "/api/posts$1"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/$1"
         }
     ]
 }
