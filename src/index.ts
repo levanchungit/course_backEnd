@@ -26,8 +26,13 @@ mongoose
   })
   .catch((error) => Log.error("❌ " + error));
 
-app.use(cors());
+//fix error CORS
+let corsOptions = {
+  origin: ["http://localhost:3000", process.env.URL_FRONTEND || ""],
+};
 app.set("Access-Control-Allow-Origin", "*");
+app.use(cors(corsOptions));
+
 // Body parser configuration
 // Express 4.0
 app.use(bodyParser.json({ limit: "10mb" }));
