@@ -1,4 +1,4 @@
-import express, { Response } from "express";
+import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import userRouter from "./routes/user";
 import postRouter from "./routes/post";
@@ -38,19 +38,19 @@ app.use(helmet());
 app.use(nocache());
 
 /* Routes */
+app.get("/", (req, res: Response) => {
+  res.end(`COURSE WEB API`);
+});
+
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/auth", authRouter);
 
-app.get("/ping", (req, res: Response) => {
+app.get("/api/ping", (req, res: Response) => {
   res.status(200).json({
     message: "pong",
   });
-});
-
-app.get("/", (req, res: Response) => {
-  res.end(`COURSE WEB API`);
 });
 
 // catch 404 and forward to error handler
