@@ -5,8 +5,8 @@ import {
   getCategories,
   updateCategory,
   deleteCategory,
-} from "controllers/category";
-import { validateAdmin, validateAuthor } from "middleware/validate";
+} from "../../controllers/category";
+import { validateAdmin, validateAuthor } from "../../middleware/validate";
 
 const router = Router();
 

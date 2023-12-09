@@ -1,5 +1,5 @@
 import { Response } from "express";
-import Log from "libraries/log";
+import Log from "../libraries/log";
 import { Types } from "mongoose";
 import nodemailer from "nodemailer";
 

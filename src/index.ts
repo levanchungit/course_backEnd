@@ -1,11 +1,11 @@
 import express, { Response } from "express";
 import mongoose from "mongoose";
-import userRouter from "routes/user";
-import postRouter from "routes/post";
-import categoryRouter from "routes/category";
-import authRouter from "routes/auth";
+import userRouter from "./routes/user";
+import postRouter from "./routes/post";
+import categoryRouter from "./routes/category";
+import authRouter from "./routes/auth";
 import { config } from "dotenv";
-import Log from "libraries/log";
+import Log from "./libraries/log";
 import cors from "cors";
 import bodyParser from "body-parser";
 import helmet from "helmet";
@@ -47,6 +47,10 @@ app.get("/ping", (req, res: Response) => {
   res.status(200).json({
     message: "pong",
   });
+});
+
+app.get("/", (req, res: Response) => {
+  res.end(`COURSE WEB API`);
 });
 
 // catch 404 and forward to error handler

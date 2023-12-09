@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import Category, { ICategory } from "models/category";
-import User from "models/user";
-import { getNow, validateFields } from "utils/common";
-import { getIdFromReq } from "utils/token";
+import Category, { ICategory } from "../../models/category";
+import User from "../../models/user";
+import { getNow, validateFields } from "../../utils/common";
+import { getIdFromReq } from "../../utils/token";
 
 const updateCategory = async (req: Request, res: Response) => {
   try {

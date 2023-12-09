@@ -1,6 +1,6 @@
-import { login, logout, refreshToken } from "controllers/auth";
+import { login, logout, refreshToken } from "../../controllers/auth";
 import { Router } from "express";
-import { validateToken } from "middleware/validate";
+import { validateToken } from "../../middleware/validate";
 
 const router = Router();
 

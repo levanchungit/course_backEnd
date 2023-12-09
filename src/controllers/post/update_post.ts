@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { IPost } from "models/post";
-import Post from "models/post";
-import { getNow, validateFields } from "utils/common";
+import { IPost } from "../../models/post";
+import Post from "../../models/post";
+import { getNow, validateFields } from "../../utils/common";
 
 const updatePost = async (req: Request, res: Response) => {
   try {

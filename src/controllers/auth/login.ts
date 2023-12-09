@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
-import User from "models/user";
-import { tokenGen } from "utils/token";
+import User from "../../models/user";
+import { tokenGen } from "../../utils/token";
 
 const login = async (req: Request, res: Response) => {
   try {

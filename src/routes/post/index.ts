@@ -1,12 +1,12 @@
-import { createPost, getPost } from "controllers/post";
-import getPosts from "controllers/post/get_posts";
+import { createPost, getPost } from "../../controllers/post";
+import getPosts from "../../controllers/post/get_posts";
 
 import { Router } from "express";
 import {
   validateAdmin,
   validateAuthor,
   validateToken,
-} from "middleware/validate";
+} from "../../middleware/validate";
 
 const router = Router();
 

@@ -1,7 +1,7 @@
-import { deleteUser, getAuthor, getUsers } from "controllers/user";
-import getUserById from "controllers/user/get_user";
+import { deleteUser, getAuthor, getUsers } from "../../controllers/user";
+import getUserById from "../../controllers/user/get_user";
 import { Router } from "express";
-import { validateAdmin, validateToken } from "middleware/validate";
+import { validateAdmin, validateToken } from "../../middleware/validate";
 
 const router = Router();
 
