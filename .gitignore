@@ -5,3 +5,4 @@
 .env
 .dockerignore
 Dockerfile
+package-lock.json

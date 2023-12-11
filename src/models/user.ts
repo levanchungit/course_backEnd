@@ -1,5 +1,5 @@
-import { ROLE } from "constants/user";
-import { Author, IAuthor } from "interfaces/author";
+import { ROLE } from "../constants/user";
+import { Author, IAuthor } from "../interfaces/author";
 import { Schema, model, Document } from "mongoose";
 
 /*********************TYPE & INTERFACE*****************************/

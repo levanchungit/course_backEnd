@@ -25,7 +25,7 @@
   },
   "include": [
     "./api/*.ts",
-    "**/*.ts"
+    "./src/**/*.ts",
   ],
   "exclude": ["node_modules"],
   "compileOnSave": false,
@@ -35,5 +35,5 @@
     "compilerOptions": {
       "module": "commonjs"
     }
-  }
+  },
 }

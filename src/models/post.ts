@@ -1,4 +1,4 @@
-import { Comment, IComment } from "interfaces/comment";
+import { Comment, IComment } from "../interfaces/comment";
 import { Document, model, Schema } from "mongoose";
 
 /*********************TYPE & INTERFACE*****************************/

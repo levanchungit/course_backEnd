@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import User from "models/user";
-import { getIdFromReq } from "utils/token";
+import User from "../../models/user";
+import { getIdFromReq } from "../../utils/token";
 
 const logout = async (req: Request, res: Response) => {
   try {

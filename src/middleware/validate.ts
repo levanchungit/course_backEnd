@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
-import { parseJwt } from "utils/token";
-import User from "models/user";
-import { ROLE } from "constants/user";
+import { parseJwt } from "../utils/token";
+import User from "../models/user";
+import { ROLE } from "../constants/user";
 
 export const validateToken = async (
   req: Request,

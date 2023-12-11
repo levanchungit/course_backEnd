@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import User from "models/user";
-import { parseJwt, tokenGen } from "utils/token";
+import User from "../../models/user";
+import { parseJwt, tokenGen } from "../../utils/token";
 
 const refreshToken = async (req: Request, res: Response) => {
   const { refresh_token } = req.body;
@@ -23,7 +23,7 @@ const refreshToken = async (req: Request, res: Response) => {
   );
   user.access_token = access_token;
   await user.save();
-   return res.status(200).json({
+  return res.status(200).json({
     message: "Refresh token success",
     access_token,
   });
