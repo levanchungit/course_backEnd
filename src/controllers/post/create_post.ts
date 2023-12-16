@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Post, { IPost } from "../../models/post";
 import { Document } from "mongoose";
+import { getNow } from "utils/common";
 
 const createPost = async (req: Request, res: Response) => {
   try {
@@ -18,6 +19,9 @@ const createPost = async (req: Request, res: Response) => {
       content,
       cover_image,
       author,
+      create_at: getNow(),
+      update_at: null,
+      comments: [],
       categories,
       publish_at,
       status,

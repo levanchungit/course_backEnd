@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import Post, { IPost } from "../../models/post";
+import Post from "../../models/post";
+import Category, { CategoryTypeModel } from "models/category";
 
 const getPosts = async (req: Request, res: Response) => {
   try {
@@ -9,20 +10,37 @@ const getPosts = async (req: Request, res: Response) => {
     const startIndex = (page - 1) * limit;
     const total = await Post.countDocuments();
 
-    const posts: IPost[] = await Post.find()
+    const posts = await Post.find()
       .sort(sort)
       .limit(limit)
-      .skip(startIndex);
+      .skip(startIndex)
+      .populate("categories")
+      .lean();
+
+    const postsWithCategoryNames = await Promise.all(
+      posts.map(async (post) => {
+        const categories = await Category.find({
+          _id: { $in: post.categories },
+        });
+        const categoryNames = categories.map((category) => category.name);
+
+        return {
+          ...post,
+          category_names: categoryNames,
+        };
+      })
+    );
 
     const results = {
       total: total,
       page: page,
       limit: limit,
-      results: posts,
+      results: postsWithCategoryNames,
     };
 
     return res.json(results);
   } catch (err) {
+    console.error(err);
     return res.sendStatus(500);
   }
 };
