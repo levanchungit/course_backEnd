@@ -27,11 +27,23 @@ mongoose
   .catch((error) => Log.error("❌ " + error));
 
 //fix error CORS
-let corsOptions = {
-  origin: ["http://localhost:3000", process.env.URL_FRONTEND || ""],
-};
-app.set("Access-Control-Allow-Origin", "*");
-app.use(cors(corsOptions));
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  next();
+});
 
 // Body parser configuration
 // Express 4.0
