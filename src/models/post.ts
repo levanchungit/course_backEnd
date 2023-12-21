@@ -1,6 +1,6 @@
 import { Comment, IComment } from "../interfaces/comment";
 import { Document, model, Schema } from "mongoose";
-
+import slugify from "slugify";
 /*********************TYPE & INTERFACE*****************************/
 export type StatusPostType = "draft" | "pending" | "public" | "private";
 
@@ -13,11 +13,13 @@ export type IPost = {
   update_at: Date;
   comments: IComment[];
   categories: string[];
+  category_names: string[];
   view: number;
   like: number;
   share: number;
   status: StatusPostType;
   publish_at: Date | null;
+  slug: string;
 };
 
 export type PostTypeModel = IPost & Document;
@@ -38,6 +40,17 @@ const postSchema: Schema = new Schema({
   share: { type: Number, default: 0 },
   status: { type: String, default: "draft" },
   publish_at: { type: Date, default: null },
+  slug: { type: String },
+});
+
+postSchema.pre("save", function (next) {
+  if (this.tittle && !this.slug) {
+    this.slug = slugify(this.tittle, {
+      lower: true,
+      remove: /[*+~.()'"!:@]/g,
+    });
+  }
+  next();
 });
 
 const Post = model<PostTypeModel>("Post", postSchema);
