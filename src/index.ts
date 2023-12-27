@@ -44,6 +44,7 @@ app.use(function (req, res, next) {
 
   next();
 });
+app.use(cors());
 
 // Body parser configuration
 // Express 4.0

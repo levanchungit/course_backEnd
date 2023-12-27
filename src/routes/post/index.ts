@@ -1,4 +1,4 @@
-import { createPost, getPost } from "../../controllers/post";
+import { createPost, deletePost, getPost } from "../../controllers/post";
 import getPosts from "../../controllers/post/get_posts";
 
 import { Router } from "express";
@@ -16,6 +16,8 @@ const isAuthor = [validateAuthor];
 
 router.get("/", getPosts);
 router.get("/:id", getPost);
+router.delete("/delete_post/:id", isAuthor, deletePost);
+
 // router.put("/get", isUser, updateSelfUser);
 // router.post("/add_keyword_search", isUser, addSearchHistory);
 // router.get("/get_keyword_search", isUser, getSearchHistory);

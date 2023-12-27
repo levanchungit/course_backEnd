@@ -5,7 +5,7 @@ import slugify from "slugify";
 export type StatusPostType = "draft" | "pending" | "public" | "private";
 
 export type IPost = {
-  tittle: string;
+  title: string;
   content: string;
   author: Schema.Types.ObjectId;
   cover_image: string;
@@ -20,6 +20,7 @@ export type IPost = {
   status: StatusPostType;
   publish_at: Date | null;
   slug: string;
+  note: string;
 };
 
 export type PostTypeModel = IPost & Document;
@@ -27,7 +28,7 @@ export type PostTypeModel = IPost & Document;
 /*******************************SCHEMA*****************************/
 
 const postSchema: Schema = new Schema({
-  tittle: { type: String },
+  title: { type: String },
   content: { type: String },
   author: { type: Schema.Types.ObjectId },
   cover_image: { type: String },
@@ -41,11 +42,12 @@ const postSchema: Schema = new Schema({
   status: { type: String, default: "draft" },
   publish_at: { type: Date, default: null },
   slug: { type: String },
+  note: { type: String },
 });
 
 postSchema.pre("save", function (next) {
-  if (this.tittle && !this.slug) {
-    this.slug = slugify(this.tittle, {
+  if (this.title && !this.slug) {
+    this.slug = slugify(this.title, {
       lower: true,
       remove: /[*+~.()'"!:@]/g,
     });

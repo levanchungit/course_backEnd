@@ -37,6 +37,7 @@ export const validateAuthor = async (
 ) => {
   const token = req.header("Authorization")?.slice(7); // cut Bearer
   const user = await verifyToken(token);
+  console.log(token,user);
   if (!user || user.role !== ROLE.author) {
     return res.status(401).json({ message: "Access denied" });
   }

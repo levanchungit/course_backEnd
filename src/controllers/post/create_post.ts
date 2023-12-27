@@ -6,16 +6,17 @@ import { getNow } from "utils/common";
 const createPost = async (req: Request, res: Response) => {
   try {
     const {
-      tittle,
+      title,
       content,
       cover_image,
       author,
       categories,
       publish_at,
       status,
+      note
     }: IPost = req.body;
     const post: IPost & Document = new Post({
-      tittle,
+      title,
       content,
       cover_image,
       author,
@@ -25,6 +26,7 @@ const createPost = async (req: Request, res: Response) => {
       categories,
       publish_at,
       status,
+      note
     });
 
     await post.save();
