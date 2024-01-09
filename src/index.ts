@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import userRouter from "./routes/user";
 import postRouter from "./routes/post";
 import categoryRouter from "./routes/category";
+import categoryAuthorRouter from "./routes/category/author";
 import authRouter from "./routes/auth";
 import uploadRouter from "./routes/upload";
 import { config } from "dotenv";
@@ -61,11 +62,15 @@ app.get("/", (req, res: Response) => {
   res.end(`COURSE WEB API`);
 });
 
+//USER
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/upload", uploadRouter);
+
+//ADMIN
+app.use("/api/admin/categories", categoryAuthorRouter);
 
 app.get("/api/ping", (req, res: Response) => {
   res.status(200).json({

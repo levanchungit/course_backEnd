@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Post from "../../models/post";
-import Category, { CategoryTypeModel } from "models/category";
+import Category from "models/category";
 
 const getPosts = async (req: Request, res: Response) => {
   try {
@@ -24,13 +24,15 @@ const getPosts = async (req: Request, res: Response) => {
         });
         const categoryNames = categories.map((category) => category.name);
 
+        const cleanedContent = post.content.replace(/\n/g, "");
+
         return {
           ...post,
           category_names: categoryNames,
+          content: cleanedContent,
         };
       })
     );
-
     const results = {
       total: total,
       page: page,

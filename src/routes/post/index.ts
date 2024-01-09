@@ -1,20 +1,23 @@
-import { createPost, deletePost, getPost } from "../../controllers/post";
+import {
+  createPost,
+  deletePost,
+  getPost,
+  getPostsPopular,
+} from "../../controllers/post";
 import getPosts from "../../controllers/post/get_posts";
 
 import { Router } from "express";
-import {
-  validateAdmin,
-  validateAuthor,
-  validateToken,
-} from "../../middleware/validate";
+import { validateAuthor, validateToken } from "../../middleware/validate";
 
 const router = Router();
 
-const isAdmin = [validateAdmin];
 const isUser = [validateToken];
 const isAuthor = [validateAuthor];
 
 router.get("/", getPosts);
+
+router.get("/popular", getPostsPopular);
+
 router.get("/:id", getPost);
 router.delete("/delete_post/:id", isAuthor, deletePost);
 
