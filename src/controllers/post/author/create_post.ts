@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Post, { IPost } from "../../models/post";
+import Post, { IPost } from "../../../models/post";
 import { Document } from "mongoose";
 import { getNow } from "utils/common";
 
@@ -13,7 +13,7 @@ const createPost = async (req: Request, res: Response) => {
       categories,
       publish_at,
       status,
-      note
+      note,
     }: IPost = req.body;
     const post: IPost & Document = new Post({
       title,
@@ -26,7 +26,7 @@ const createPost = async (req: Request, res: Response) => {
       categories,
       publish_at,
       status,
-      note
+      note,
     });
 
     await post.save();

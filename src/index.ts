@@ -2,6 +2,7 @@ import express, { Response } from "express";
 import mongoose from "mongoose";
 import userRouter from "./routes/user";
 import postRouter from "./routes/post";
+import postAuthorRouter from "./routes/post/author";
 import categoryRouter from "./routes/category";
 import categoryAuthorRouter from "./routes/category/author";
 import authRouter from "./routes/auth";
@@ -71,6 +72,7 @@ app.use("/api/upload", uploadRouter);
 
 //ADMIN
 app.use("/api/admin/categories", categoryAuthorRouter);
+app.use("/api/admin/posts", postAuthorRouter);
 
 app.get("/api/ping", (req, res: Response) => {
   res.status(200).json({
