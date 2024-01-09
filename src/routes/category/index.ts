@@ -6,11 +6,10 @@ import {
   updateCategory,
   deleteCategory,
 } from "../../controllers/category";
-import { validateAdmin, validateAuthor } from "../../middleware/validate";
+import { validateAuthor } from "../../middleware/validate";
 
 const router = Router();
 
-const isAdmin = [validateAdmin];
 const isAuthor = [validateAuthor];
 
 // Category routes

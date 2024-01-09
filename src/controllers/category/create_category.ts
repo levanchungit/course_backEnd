@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Category, { ICategory } from "../../models/category";
 import User from "../../models/user";
-import { getNow, validateFields } from "../../utils/common";
+import { getNow } from "../../utils/common";
 import { getIdFromReq } from "../../utils/token";
 
 const createCategory = async (req: Request, res: Response) => {
@@ -9,12 +9,7 @@ const createCategory = async (req: Request, res: Response) => {
     const user_id = getIdFromReq(req);
     const user = await User.findById(user_id);
     const { name }: ICategory = req.body;
-    const validateFieldsResult = validateFields({ name }, [
-      { name: "name", type: "string", required: true },
-    ]);
-    if (validateFieldsResult) {
-      return res.status(400).json({ message: validateFieldsResult });
-    }
+
     if (!user) return res.sendStatus(403);
     const existingCategory = await Category.findOne({ name });
     if (existingCategory) {

@@ -1,4 +1,5 @@
 export { default as getPosts } from "./get_posts";
+export { default as getPostsPopular } from "./get_posts_popular";
 export { default as getPost } from "./get_post";
 export { default as updatePost } from "./update_post";
 export { default as deletePost } from "./delete_post";

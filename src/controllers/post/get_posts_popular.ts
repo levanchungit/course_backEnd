@@ -4,25 +4,15 @@ import Post from "../../models/post";
 const getPosts = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const sortDirection = (req.query.sort as string) || "asc";
+    const limit = parseInt(req.query.limit as string) || 5;
+    const sort = (req.query.sort as string) || "created_at";
     const startIndex = (page - 1) * limit;
     const total = await Post.countDocuments();
 
-    let sortQuery = {};
-    if (sortDirection === "asc") {
-      sortQuery = { create_at: 1 };
-    } else if (sortDirection === "desc") {
-      sortQuery = { create_at: -1 };
-    }
-
-    const posts = await Post.find()
-      .sort(sortQuery)
+    const posts = await Post.find({}, "title slug -_id")
+      .sort(sort)
       .limit(limit)
-      .skip(startIndex)
-      .populate("categories")
-      .lean()
-      .select("-_id -created_at -update_at -__v -status -note -author");
+      .skip(startIndex);
 
     const results = {
       total: total,
