@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { IPost } from "../../../models/post";
 import Post from "../../../models/post";
-import { getNow } from "../../../utils/common";
 
 const updatePost = async (req: Request, res: Response) => {
   try {
@@ -17,6 +16,7 @@ const updatePost = async (req: Request, res: Response) => {
       categories,
       publish_at,
       status,
+      note,
     }: IPost = req.body;
 
     post.title = title;
@@ -27,6 +27,7 @@ const updatePost = async (req: Request, res: Response) => {
     post.categories = categories;
     post.publish_at = publish_at;
     post.status = status;
+    post.note = note;
 
     post.update_at = new Date();
 

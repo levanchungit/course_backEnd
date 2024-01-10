@@ -7,7 +7,7 @@ const getPost = async (req: Request, res: Response) => {
 
     const post: IPost | null = await Post.findById(_id);
     const result = {
-      results: post,
+      result: post,
     };
 
     return res.json(result);

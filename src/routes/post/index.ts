@@ -7,6 +7,7 @@ const router = Router();
 
 router.get("/", getPosts);
 router.get("/:id", getPost);
+router.put("/:id", getPost);
 router.get("/popular", getPostsPopular);
 
 export default router;
