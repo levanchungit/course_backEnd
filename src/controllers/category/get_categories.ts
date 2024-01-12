@@ -13,7 +13,7 @@ const getCategories = async (req: Request, res: Response) => {
       .sort(sort)
       .limit(limit)
       .skip(startIndex)
-      .select("-_id -created_at -update_at -__v");
+      .select("-_id -create_at -update_at -__v");
 
     const results = {
       total: total,

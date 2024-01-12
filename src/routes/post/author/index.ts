@@ -7,7 +7,7 @@ import {
 } from "../../../controllers/post";
 
 import { Router } from "express";
-import { validateAuthor, validateToken } from "../../../middleware/validate";
+import { validateAuthor } from "../../../middleware/validate";
 
 const router = Router();
 

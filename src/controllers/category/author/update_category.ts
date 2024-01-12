@@ -1,28 +1,19 @@
 import { Request, Response } from "express";
-import Category, { ICategory } from "../../models/category";
-import User from "../../models/user";
-import { getNow, validateFields } from "../../utils/common";
-import { getIdFromReq } from "../../utils/token";
+import Category, { ICategory } from "../../../models/category";
 
 const updateCategory = async (req: Request, res: Response) => {
   try {
-    const id_user = getIdFromReq(req);
     const { id } = req.params;
-    const user = await User.findById(id_user);
-    const { name }: ICategory = req.body;
+    const { name, note }: ICategory = req.body;
     const category = await Category.findById(id);
 
     if (!category) return res.sendStatus(404);
-    if (!user) return res.sendStatus(403);
-
-    const validateFieldsResult = validateFields({ name }, [
-      { name: "name", type: "string", required: true },
-    ]);
-    if (validateFieldsResult)
-      return res.status(400).json({ message: validateFieldsResult });
 
     const existingCategory = await Category.findOne({ name });
-    if (existingCategory && existingCategory._id !== category._id) {
+    if (
+      existingCategory &&
+      existingCategory._id.toString() != category._id.toString()
+    ) {
       return res
         .status(409)
         .json({ message: `Category name '${name}' already exists` });
@@ -30,12 +21,14 @@ const updateCategory = async (req: Request, res: Response) => {
 
     const fieldsEdited = [];
     if (name !== category.name) fieldsEdited.push("name");
+    if (note !== category.note) fieldsEdited.push("note");
 
     if (!fieldsEdited.length) return res.sendStatus(304);
 
     const newCategory: ICategory = {
       ...category.toObject(),
       name: name ?? category.name,
+      note: note ?? category.note,
       update_at: new Date(),
     };
 

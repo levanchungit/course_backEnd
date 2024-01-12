@@ -71,8 +71,8 @@ app.use("/api/auth", authRouter);
 app.use("/api/upload", uploadRouter);
 
 //ADMIN
-app.use("/api/admin/categories", categoryAuthorRouter);
 app.use("/api/admin/posts", postAuthorRouter);
+app.use("/api/admin/categories", categoryAuthorRouter);
 
 app.get("/api/ping", (req, res: Response) => {
   res.status(200).json({

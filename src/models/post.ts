@@ -2,7 +2,12 @@ import { Comment, IComment } from "../interfaces/comment";
 import { Document, model, Schema } from "mongoose";
 import slugify from "slugify";
 /*********************TYPE & INTERFACE*****************************/
-export type StatusPostType = "draft" | "pending" | "public" | "private";
+export type StatusPostType =
+  | "draft"
+  | "scheduled"
+  | "published"
+  | "archived"
+  | "deleted";
 
 export type IPost = {
   title: string;

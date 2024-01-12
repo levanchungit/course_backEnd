@@ -19,15 +19,36 @@ const updatePost = async (req: Request, res: Response) => {
       note,
     }: IPost = req.body;
 
-    post.title = title;
-    post.content = content;
-    post.cover_image = cover_image;
-    post.author = author;
-    post.status = status;
-    post.categories = categories;
-    post.publish_at = publish_at;
-    post.status = status;
-    post.note = note;
+    //validate have update 
+    if (!title && !content && !cover_image && !author && !categories && !publish_at && !status && !note) {
+      return res.status(400).json({ message: "No field to update" });
+    }
+
+    //validate
+    if (title) {
+      post.title = title;
+    }
+    if (content) {
+      post.content = content;
+    }
+    if (cover_image) {
+      post.cover_image = cover_image;
+    }
+    if (author) {
+      post.author = author;
+    }
+    if (categories) {
+      post.categories = categories;
+    }
+    if (publish_at) {
+      post.publish_at = publish_at;
+    }
+    if (status) {
+      post.status = status;
+    }
+    if (note) {
+      post.note = note;
+    }
 
     post.update_at = new Date();
 

@@ -23,7 +23,7 @@ const getPosts = async (req: Request, res: Response) => {
       .skip(startIndex)
       .populate("categories")
       .lean()
-      .select("-_id -created_at -update_at -__v -status -note -author");
+      .select("-_id -create_at -update_at -__v -status -note -author");
 
     const postsWithCategoryNames = await Promise.all(
       posts.map(async (post) => {
