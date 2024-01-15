@@ -1,11 +1,16 @@
 import { Comment, IComment } from "../interfaces/comment";
 import { Document, model, Schema } from "mongoose";
-
+import slugify from "slugify";
 /*********************TYPE & INTERFACE*****************************/
-export type StatusPostType = "draft" | "pending" | "public" | "private";
+export type StatusPostType =
+  | "draft"
+  | "scheduled"
+  | "published"
+  | "archived"
+  | "deleted";
 
 export type IPost = {
-  tittle: string;
+  title: string;
   content: string;
   author: Schema.Types.ObjectId;
   cover_image: string;
@@ -13,11 +18,14 @@ export type IPost = {
   update_at: Date;
   comments: IComment[];
   categories: string[];
+  category_names: string[];
   view: number;
   like: number;
   share: number;
   status: StatusPostType;
   publish_at: Date | null;
+  slug: string;
+  note: string;
 };
 
 export type PostTypeModel = IPost & Document;
@@ -25,7 +33,7 @@ export type PostTypeModel = IPost & Document;
 /*******************************SCHEMA*****************************/
 
 const postSchema: Schema = new Schema({
-  tittle: { type: String },
+  title: { type: String },
   content: { type: String },
   author: { type: Schema.Types.ObjectId },
   cover_image: { type: String },
@@ -38,6 +46,18 @@ const postSchema: Schema = new Schema({
   share: { type: Number, default: 0 },
   status: { type: String, default: "draft" },
   publish_at: { type: Date, default: null },
+  slug: { type: String },
+  note: { type: String },
+});
+
+postSchema.pre("save", function (next) {
+  if (this.title && !this.slug) {
+    this.slug = slugify(this.title, {
+      lower: true,
+      remove: /[*+~.()'"!:@]/g,
+    });
+  }
+  next();
 });
 
 const Post = model<PostTypeModel>("Post", postSchema);

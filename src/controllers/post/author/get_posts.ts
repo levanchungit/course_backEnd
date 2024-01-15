@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Post from "../../models/post";
+import Post from "../../../models/post";
 import Category from "models/category";
 
 const getPosts = async (req: Request, res: Response) => {
@@ -23,7 +23,6 @@ const getPosts = async (req: Request, res: Response) => {
       .skip(startIndex)
       .populate("categories")
       .lean()
-      .select("-_id -create_at -update_at -__v -status -note -author");
 
     const postsWithCategoryNames = await Promise.all(
       posts.map(async (post) => {

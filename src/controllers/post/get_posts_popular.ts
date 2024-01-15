@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import User, { IUser } from "../../models/user";
+import Post from "../../models/post";
 
-const getUsers = async (req: Request, res: Response) => {
+const getPosts = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
+    const limit = parseInt(req.query.limit as string) || 5;
     const sort = (req.query.sort as string) || "create_at";
     const startIndex = (page - 1) * limit;
-    const total = await User.countDocuments();
+    const total = await Post.countDocuments();
 
-    const users: IUser[] = await User.find()
+    const posts = await Post.find({}, "title slug -_id")
       .sort(sort)
       .limit(limit)
       .skip(startIndex);
@@ -18,13 +18,14 @@ const getUsers = async (req: Request, res: Response) => {
       total: total,
       page: page,
       limit: limit,
-      results: users,
+      results: posts,
     };
 
     return res.json(results);
   } catch (err) {
+    console.error(err);
     return res.sendStatus(500);
   }
 };
 
-export default getUsers;
+export default getPosts;

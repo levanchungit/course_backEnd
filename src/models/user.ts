@@ -10,7 +10,7 @@ export type IUser = {
   access_token: string;
   refresh_token: string;
   role: ROLE;
-  created_at: Date;
+  create_at: Date;
   update_at: Date;
   device_id: string;
   last_login: Date;
@@ -27,7 +27,7 @@ export const userSchema = new Schema({
   access_token: { type: String },
   refresh_token: { type: String },
   role: { type: String, enum: ROLE, default: ROLE.user },
-  created_at: { type: Date, default: Date.now },
+  create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },
   device_id: { type: String },
   last_login: { type: Date },

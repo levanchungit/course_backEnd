@@ -17,19 +17,6 @@ export const validateToken = async (
   next();
 };
 
-export const validateAdmin = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const token = req.header("Authorization")?.slice(7); // cut Bearer
-  const user = await verifyToken(token);
-  if (!user || user.role !== ROLE.admin) {
-    return res.status(401).json({ message: "Access denied" });
-  }
-  next();
-};
-
 export const validateAuthor = async (
   req: Request,
   res: Response,

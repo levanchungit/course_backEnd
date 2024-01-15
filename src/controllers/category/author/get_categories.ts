@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Category, { ICategory } from "../../models/category";
+import Category, { ICategory } from "../../../models/category";
 
 const getCategories = async (req: Request, res: Response) => {
   try {
@@ -12,8 +12,7 @@ const getCategories = async (req: Request, res: Response) => {
     const categories: ICategory[] = await Category.find()
       .sort(sort)
       .limit(limit)
-      .skip(startIndex)
-      .select("-_id -create_at -update_at -__v");
+      .skip(startIndex);
 
     const results = {
       total: total,

@@ -2,8 +2,11 @@ import express, { Response } from "express";
 import mongoose from "mongoose";
 import userRouter from "./routes/user";
 import postRouter from "./routes/post";
+import postAuthorRouter from "./routes/post/author";
 import categoryRouter from "./routes/category";
+import categoryAuthorRouter from "./routes/category/author";
 import authRouter from "./routes/auth";
+import uploadRouter from "./routes/upload";
 import { config } from "dotenv";
 import Log from "./libraries/log";
 import cors from "cors";
@@ -44,6 +47,7 @@ app.use(function (req, res, next) {
 
   next();
 });
+app.use(cors());
 
 // Body parser configuration
 // Express 4.0
@@ -59,10 +63,16 @@ app.get("/", (req, res: Response) => {
   res.end(`COURSE WEB API`);
 });
 
+//USER
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/upload", uploadRouter);
+
+//ADMIN
+app.use("/api/admin/posts", postAuthorRouter);
+app.use("/api/admin/categories", categoryAuthorRouter);
 
 app.get("/api/ping", (req, res: Response) => {
   res.status(200).json({

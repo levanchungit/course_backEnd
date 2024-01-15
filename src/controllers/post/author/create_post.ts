@@ -1,26 +1,32 @@
 import { Request, Response } from "express";
-import Post, { IPost } from "../../models/post";
+import Post, { IPost } from "../../../models/post";
 import { Document } from "mongoose";
+import { getNow } from "utils/common";
 
 const createPost = async (req: Request, res: Response) => {
   try {
     const {
-      tittle,
+      title,
       content,
       cover_image,
       author,
       categories,
       publish_at,
       status,
+      note,
     }: IPost = req.body;
     const post: IPost & Document = new Post({
-      tittle,
+      title: title || "[No title]",
       content,
       cover_image,
       author,
+      create_at: getNow(),
+      update_at: getNow(),
+      comments: [],
       categories,
       publish_at,
       status,
+      note,
     });
 
     await post.save();
