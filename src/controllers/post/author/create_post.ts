@@ -16,12 +16,12 @@ const createPost = async (req: Request, res: Response) => {
       note,
     }: IPost = req.body;
     const post: IPost & Document = new Post({
-      title,
+      title: title || "[No title]",
       content,
       cover_image,
       author,
       create_at: getNow(),
-      update_at: null,
+      update_at: getNow(),
       comments: [],
       categories,
       publish_at,
