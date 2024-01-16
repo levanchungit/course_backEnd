@@ -2,7 +2,9 @@ import express, { Response } from "express";
 import mongoose from "mongoose";
 import userRouter from "./routes/user";
 import postRouter from "./routes/post";
+import courseRouter from "./routes/course";
 import postAuthorRouter from "./routes/post/author";
+import courseAuthorRouter from "./routes/course/author";
 import categoryRouter from "./routes/category";
 import categoryAuthorRouter from "./routes/category/author";
 import authRouter from "./routes/auth";
@@ -66,12 +68,14 @@ app.get("/", (req, res: Response) => {
 //USER
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/courses", courseRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/upload", uploadRouter);
 
 //ADMIN
 app.use("/api/admin/posts", postAuthorRouter);
+app.use("/api/admin/courses", courseAuthorRouter);
 app.use("/api/admin/categories", categoryAuthorRouter);
 
 app.get("/api/ping", (req, res: Response) => {
