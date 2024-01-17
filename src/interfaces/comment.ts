@@ -75,46 +75,9 @@ export const Comment = {
 };
 
 export const Thumbnails = {
-  default: {
-    type: {
-      url: { type: String, required: true },
-      width: { type: Number, required: true },
-      height: { type: Number, required: true },
-    },
-    required: true,
-  },
-  medium: {
-    type: {
-      url: { type: String, required: true },
-      width: { type: Number, required: true },
-      height: { type: Number, required: true },
-    },
-    required: true,
-  },
-  high: {
-    type: {
-      url: { type: String, required: true },
-      width: { type: Number, required: true },
-      height: { type: Number, required: true },
-    },
-    required: true,
-  },
-  standard: {
-    type: {
-      url: { type: String, required: true },
-      width: { type: Number, required: true },
-      height: { type: Number, required: true },
-    },
-    required: true,
-  },
-  maxres: {
-    type: {
-      url: { type: String, required: true },
-      width: { type: Number, required: true },
-      height: { type: Number, required: true },
-    },
-    required: true,
-  },
+  url: { type: String, required: true },
+  width: { type: Number, required: true },
+  height: { type: Number, required: true },
 };
 
 export const Items = {

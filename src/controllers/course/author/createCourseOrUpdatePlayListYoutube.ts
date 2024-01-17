@@ -1,16 +1,19 @@
+import { Thumbnails } from "./../../../interfaces/comment";
 import { Request, Response } from "express";
 import { IItemsPlaylistListResponse } from "interfaces/comment";
+import Log from "libraries/log";
 import Category from "models/category";
 import Course from "models/course";
-import { getNow } from "utils/common";
+import { getDateTime, getNow } from "utils/common";
 
-const getPlayLists = async (req: Request, res: Response) => {
+const createCourseOrUpdatePlayListYoutube = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    // const page = parseInt(req.query.page as string) || 1;
-    // const limit = parseInt(req.query.limit as string) || 10;
-    // const sortDirection = (req.query.sort as string) || "asc";
     const channelId =
       (req.query.channelId as string) || "UCCA0ty3anrudXp-PZ3gPIfQ";
+    const mode = (req.query.mode as string) || "Automatic";
 
     // Xử lý phần course
     const url = `https://youtube.googleapis.com/youtube/v3/playlists?part=snippet&channelId=${channelId}&key=${process.env.YOUTUBE_API_KEY}`;
@@ -40,11 +43,11 @@ const getPlayLists = async (req: Request, res: Response) => {
           category_name = category.name;
         }
 
-        const checkExistCourse = await Course.findOne({ idPlaylist: item.id});
-        if (checkExistCourse){
+        const checkExistCourse = await Course.findOne({ idPlaylist: item.id });
+        if (checkExistCourse) {
           // Cập nhật Course nếu tồn tại
           checkExistCourse.title = item.snippet.title;
-          checkExistCourse.cover_image = item.snippet.thumbnails.default.url;
+          checkExistCourse.cover_image = item.snippet.thumbnails.maxres.url;
           checkExistCourse.description = item.snippet.description;
           checkExistCourse.publishedAt = new Date(item.snippet.publishedAt);
           checkExistCourse.update_at = new Date(getNow());
@@ -54,7 +57,7 @@ const getPlayLists = async (req: Request, res: Response) => {
           const newCourse = new Course({
             idPlaylist: item.id,
             title: item.snippet.title,
-            cover_image: item.snippet.thumbnails.default.url,
+            cover_image: item.snippet.thumbnails.maxres.url,
             publishedAt: item.snippet.publishedAt,
             create_at: getNow(),
             update_at: getNow(),
@@ -67,21 +70,53 @@ const getPlayLists = async (req: Request, res: Response) => {
 
           await newCourse.save();
         }
+
+        // Xử lý phần items course
+        if (item.id) {
+          const url1 = `https://www.googleapis.com/youtube/v3/playlistItems?key=${process.env.YOUTUBE_API_KEY}&part=snippet&playlistId=${item.id}&maxResults=10`;
+          const response1 = await fetch(url1);
+          const data1 = await response1.json();
+
+          if (data1) {
+            data1.items.forEach(async (item1: any) => {
+              const checkExistCourse = await Course.findOne({
+                idPlaylist: item.id,
+              });
+              if (checkExistCourse) {
+                const checkExistItem = checkExistCourse.items.find(
+                  (item2) => item2.videoId === item1.snippet.resourceId.videoId
+                );
+                if (!checkExistItem) {
+                  checkExistCourse.items.push({
+                    publishedAt: item1.snippet.publishedAt,
+                    channelId: item1.snippet.channelId,
+                    title: item1.snippet.title,
+                    description: item1.snippet.description,
+                    thumbnails: item1.snippet.thumbnails.maxres,
+                    playlistId: item1.snippet.playlistId,
+                    videoId: item1.snippet.resourceId.videoId,
+                  });
+                  await checkExistCourse.save();
+                }
+              }
+            });
+          }
+        }
       });
     }
 
-    // Xử lý phần items course
-    const url1 = `https://www.googleapis.com/youtube/v3/playlistItems?key=${process.env.YOUTUBE_API_KEY}&part=snippet&playlistId=PLwQaTWy7r4yMM0cLle7dU3053dbia-P7l&maxResults=10`;
-
     const results = {
-      results: "OK",
+      results:
+        "Đã cập nhật " + mode + " course thành công vào lúc " + getDateTime(),
     };
 
-    return res.json(data.items);
+    Log.info(results.results);
+
+    return res.json(results);
   } catch (err) {
-    console.error(err);
+    Log.error(err);
     return res.sendStatus(500);
   }
 };
 
-export default getPlayLists;
+export default createCourseOrUpdatePlayListYoutube;

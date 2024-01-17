@@ -4,7 +4,7 @@ import {
   deleteCourse,
   gets,
   get,
-  getPlayLists,
+  createCourseOrUpdatePlayListYoutube,
 } from "../../../controllers/course";
 
 import { Router } from "express";
@@ -15,7 +15,7 @@ const router = Router();
 const isAuthor = [validateAuthor];
 
 router.get("/", isAuthor, gets);
-router.get("/playLists", isAuthor, getPlayLists);
+router.get("/playLists", isAuthor, createCourseOrUpdatePlayListYoutube);
 router.get("/:id", isAuthor, get);
 router.post("/", isAuthor, create);
 router.put("/:id", isAuthor, update);

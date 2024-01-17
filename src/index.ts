@@ -16,6 +16,7 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import nocache from "nocache";
 import morgan from "morgan";
+import axios from "axios";
 
 const app = express();
 config();
@@ -83,6 +84,31 @@ app.get("/api/ping", (req, res: Response) => {
     message: "pong",
   });
 });
+
+// Tự động cập nhât danh sách course
+let time_automatic =
+  parseInt(process.env.TIME_UPDATE_COURSE_AUTOMATIC ?? "") || 86400000;
+setInterval(async () => {
+  try {
+    const loginRes = await axios.post(`http://localhost:3000/api/auth/login`, {
+      email: process.env.EMAIL_ADMIN,
+      passwordHash: process.env.PASSWORD_ADMIN,
+      device_id: "admin nodejs express",
+    });
+    if (loginRes) {
+      await axios.get(
+        `http://localhost:3000/api/admin/courses/playLists?channelId=${process.env.channelId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginRes.data.access_token}`,
+          },
+        }
+      );
+    }
+  } catch (error) {
+    Log.error(error);
+  }
+}, time_automatic); //1h
 
 // catch 404 and forward to error handler
 app.use((req, res) => {

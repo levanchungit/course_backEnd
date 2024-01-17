@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Post from "../../models/post";
+import Log from "libraries/log";
 
 const getPosts = async (req: Request, res: Response) => {
   try {
@@ -23,7 +24,7 @@ const getPosts = async (req: Request, res: Response) => {
 
     return res.json(results);
   } catch (err) {
-    console.error(err);
+    Log.error(err);
     return res.sendStatus(500);
   }
 };

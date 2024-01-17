@@ -4,7 +4,6 @@ import Category, { ICategory } from "../../../models/category";
 const getCategoryById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const category: ICategory | null = await Category.findById(id);
     if (!category) {
       return res.sendStatus(404);

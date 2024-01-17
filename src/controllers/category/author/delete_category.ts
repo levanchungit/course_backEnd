@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Category from "../../../models/category";
+import Log from "libraries/log";
 
 const deleteCategory = async (req: Request, res: Response) => {
   try {
@@ -11,7 +12,7 @@ const deleteCategory = async (req: Request, res: Response) => {
     await Category.findByIdAndDelete(id);
     return res.sendStatus(200);
   } catch (err) {
-    console.error(err);
+    Log.error(err);
     return res.sendStatus(500);
   }
 };

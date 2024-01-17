@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Course from "../../../models/course";
 import Category from "models/category";
+import Log from "libraries/log";
 
 const getCourses = async (req: Request, res: Response) => {
   try {
@@ -46,7 +47,7 @@ const getCourses = async (req: Request, res: Response) => {
 
     return res.json(results);
   } catch (err) {
-    console.error(err);
+    Log.error(err);
     return res.sendStatus(500);
   }
 };
