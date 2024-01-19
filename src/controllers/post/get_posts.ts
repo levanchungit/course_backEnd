@@ -18,13 +18,13 @@ const getPosts = async (req: Request, res: Response) => {
       sortQuery = { create_at: -1 };
     }
 
-    const posts = await Post.find()
+    const posts = await Post.find({ status: "published" })
       .sort(sortQuery)
       .limit(limit)
       .skip(startIndex)
       .populate("categories")
       .lean()
-      .select("-_id -create_at -update_at -__v -status -note -author");
+      .select("-_id -update_at -__v -status -note -author");
 
     const postsWithCategoryNames = await Promise.all(
       posts.map(async (post) => {
