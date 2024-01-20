@@ -1,6 +1,7 @@
 import express, { Response } from "express";
 import mongoose from "mongoose";
 import userRouter from "./routes/user";
+import userAuthorRouter from "./routes/user/author";
 import postRouter from "./routes/post";
 import courseRouter from "./routes/course";
 import postAuthorRouter from "./routes/post/author";
@@ -76,6 +77,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/videos", videoRouter);
 
 //ADMIN
+app.use("/api/admin/users", userAuthorRouter);
 app.use("/api/admin/upload", uploadRouter);
 app.use("/api/admin/posts", postAuthorRouter);
 app.use("/api/admin/courses", courseAuthorRouter);
