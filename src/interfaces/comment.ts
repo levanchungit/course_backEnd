@@ -19,22 +19,6 @@ export type IThumbnail = {
   height: number;
 };
 
-export type IItems = {
-  publishedAt: Date;
-  channelId: string;
-  title: string;
-  description: string;
-  thumbnails: {
-    default: IThumbnail;
-    medium: IThumbnail;
-    high: IThumbnail;
-    standard: IThumbnail;
-    maxres: IThumbnail;
-  };
-  playlistId: string;
-  videoId: string;
-};
-
 export type IItemsPlaylistListResponse = {
   kind: string;
   etag: string;
@@ -78,14 +62,4 @@ export const Thumbnails = {
   url: { type: String, required: true },
   width: { type: Number, required: true },
   height: { type: Number, required: true },
-};
-
-export const Items = {
-  publishedAt: { type: Date, required: true, default: Date.now },
-  channelId: { type: String, required: true },
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  thumbnails: { type: Thumbnails, required: true },
-  playlistId: { type: String, required: true },
-  videoId: { type: String, required: true },
 };

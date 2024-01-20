@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { Comment, IComment } from "../interfaces/comment";
 import { Document, model, Schema } from "mongoose";
 import slugify from "slugify";
@@ -10,6 +11,7 @@ export type StatusPostType =
   | "deleted";
 
 export type IPost = {
+  _id: ObjectId;
   title: string;
   content: string;
   author: Schema.Types.ObjectId;
@@ -33,6 +35,7 @@ export type PostTypeModel = IPost & Document;
 /*******************************SCHEMA*****************************/
 
 const postSchema: Schema = new Schema({
+  _id: { type: Schema.Types.ObjectId, auto: true },
   title: { type: String },
   content: { type: String },
   author: { type: Schema.Types.ObjectId },
@@ -59,6 +62,9 @@ postSchema.pre("save", function (next) {
   }
   next();
 });
+
+// Tạo text index cho các trường 'title' và 'content'. Dùng để search key tối ưu hoá hơn
+postSchema.index({ title: "text", content: "text" });
 
 const Post = model<PostTypeModel>("Post", postSchema);
 

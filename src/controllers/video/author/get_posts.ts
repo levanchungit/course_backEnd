@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Post from "../../models/post";
+import Post from "../../../models/post";
 import Category from "models/category";
 import Log from "libraries/log";
 
@@ -8,8 +8,8 @@ const getPosts = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const sortDirection = (req.query.sort as string) || "asc";
-    const key = (req.query.key as string) || "";
     const startIndex = (page - 1) * limit;
+    const total = await Post.countDocuments();
 
     let sortQuery = {};
     if (sortDirection === "asc") {
@@ -18,24 +18,12 @@ const getPosts = async (req: Request, res: Response) => {
       sortQuery = { create_at: -1 };
     }
 
-    // Lấy danh sách ObjectID tương ứng với categories.name từ collection 'categories'
-    const categoryIds = await Category.find({
-      name: { $regex: key, $options: "i" },
-    }).distinct("_id");
-
-    const posts = await Post.find({
-      status: "published",
-      $or: [
-        { title: { $regex: key, $options: "i" } }, // Tìm kiếm tương đối trong 'title'
-        { categories: { $in: categoryIds } }, // Tìm kiếm theo categories._id
-      ],
-    })
+    const posts = await Post.find()
       .sort(sortQuery)
       .limit(limit)
       .skip(startIndex)
       .populate("categories")
-      .lean()
-      .select("-_id -update_at -__v -status -note -author");
+      .lean();
 
     const postsWithCategoryNames = await Promise.all(
       posts.map(async (post) => {
@@ -50,8 +38,6 @@ const getPosts = async (req: Request, res: Response) => {
         };
       })
     );
-
-    const total = postsWithCategoryNames.length;
 
     const results = {
       total: total,

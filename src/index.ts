@@ -5,6 +5,7 @@ import postRouter from "./routes/post";
 import courseRouter from "./routes/course";
 import postAuthorRouter from "./routes/post/author";
 import courseAuthorRouter from "./routes/course/author";
+import videoRouter from "./routes/video";
 import categoryRouter from "./routes/category";
 import categoryAuthorRouter from "./routes/category/author";
 import authRouter from "./routes/auth";
@@ -72,9 +73,10 @@ app.use("/api/posts", postRouter);
 app.use("/api/courses", courseRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/upload", uploadRouter);
+app.use("/api/videos", videoRouter);
 
 //ADMIN
+app.use("/api/admin/upload", uploadRouter);
 app.use("/api/admin/posts", postAuthorRouter);
 app.use("/api/admin/courses", courseAuthorRouter);
 app.use("/api/admin/categories", categoryAuthorRouter);
