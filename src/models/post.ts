@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb";
-import { Comment, IComment } from "../interfaces/comment";
 import { Document, model, Schema } from "mongoose";
 import slugify from "slugify";
 /*********************TYPE & INTERFACE*****************************/
@@ -18,9 +17,8 @@ export type IPost = {
   cover_image: string;
   create_at: Date;
   update_at: Date;
-  comments: IComment[];
+  comments: Schema.Types.ObjectId[];
   categories: string[];
-  category_names: string[];
   view: number;
   like: number;
   share: number;
@@ -42,13 +40,13 @@ const postSchema: Schema = new Schema({
   cover_image: { type: String },
   create_at: { type: Date },
   update_at: { type: Date },
-  comments: { type: [Comment], default: [] },
-  categories: { type: [String], default: [] },
+  comments: { type: [Schema.Types.ObjectId], ref: "Comment" },
+  categories: { type: [String], default: [], ref: "Category" },
   view: { type: Number, default: 0 },
   like: { type: Number, default: 0 },
   share: { type: Number, default: 0 },
   status: { type: String, default: "draft" },
-  publish_at: { type: Date, default: null },
+  publish_at: { type: Date, default: "" },
   slug: { type: String },
   note: { type: String },
 });
@@ -57,7 +55,7 @@ postSchema.pre("save", function (next) {
   if (this.title && !this.slug) {
     this.slug = slugify(this.title, {
       lower: true,
-      remove: /[*+~.()'"!:@]/g,
+      remove: /[^a-zA-Z0-9]/g, // Chỉ giữ lại chữ cái và số
     });
   }
   next();

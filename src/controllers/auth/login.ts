@@ -37,6 +37,7 @@ const login = async (req: Request, res: Response) => {
     user.access_token = access_token;
     user.refresh_token = refresh_token;
     if (device_id != "") user.device_id = device_id;
+    user.last_login = new Date();
     await user.save();
     return res.status(200).json({
       message: "Login success",
