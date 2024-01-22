@@ -60,18 +60,18 @@ const updateMe = async (req: Request, res: Response) => {
     if (!user.author) {
       // create author
       user.author = {
-        instagram: instagram,
-        linkedin: linkedin,
-        youtube: youtube,
-        avatar: avatar,
-        facebook: facebook,
-        introduction: introduction,
-        name: name,
+        instagram: instagram ? instagram : "temp",
+        linkedin: linkedin ? linkedin : "temp",
+        youtube: youtube ? youtube : "temp",
+        avatar: avatar ? avatar : "temp",
+        facebook: facebook ? facebook : "temp",
+        introduction: introduction ? introduction : "temp",
+        name: name ? name : "temp",
         create_at: new Date(),
         update_at: new Date(),
       };
     }
-    
+
     // Sử dụng findByIdAndUpdate thay vì save
     await User.findByIdAndUpdate(_id, user, {
       new: true,
