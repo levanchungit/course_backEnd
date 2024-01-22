@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Category, { ICategory } from "../../../models/category";
+import Log from "libraries/log";
 
 const updateCategory = async (req: Request, res: Response) => {
   try {
@@ -35,7 +36,7 @@ const updateCategory = async (req: Request, res: Response) => {
     await category.set(newCategory).save();
     return res.sendStatus(200);
   } catch (err) {
-    console.error(err);
+    Log.error(err);
     return res.sendStatus(500);
   }
 };

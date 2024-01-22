@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import Post from "../../../models/post";
+import Course from "../../../models/course";
 import Category from "models/category";
 import Log from "libraries/log";
 
-const getPosts = async (req: Request, res: Response) => {
+const getCourses = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const sortDirection = (req.query.sort as string) || "asc";
     const startIndex = (page - 1) * limit;
-    const total = await Post.countDocuments();
+    const total = await Course.countDocuments();
 
     let sortQuery = {};
     if (sortDirection === "asc") {
@@ -18,23 +18,22 @@ const getPosts = async (req: Request, res: Response) => {
       sortQuery = { create_at: -1 };
     }
 
-    const posts = await Post.find()
+    const courses = await Course.find()
       .sort(sortQuery)
       .limit(limit)
       .skip(startIndex)
-      .populate("categories")
       .lean();
 
-    const postsWithCategoryNames = await Promise.all(
-      posts.map(async (post) => {
+    const coursesWithCategoryName = await Promise.all(
+      courses.map(async (course) => {
         const categories = await Category.find({
-          _id: { $in: post.categories },
+          _id: course.category,
         });
-        const categoryNames = categories.map((category) => category.name);
+        const categoryName = categories.map((category) => category.name);
 
         return {
-          ...post,
-          category_names: categoryNames,
+          ...course,
+          category_name: categoryName,
         };
       })
     );
@@ -43,7 +42,7 @@ const getPosts = async (req: Request, res: Response) => {
       total: total,
       page: page,
       limit: limit,
-      results: postsWithCategoryNames,
+      results: coursesWithCategoryName,
     };
 
     return res.json(results);
@@ -53,4 +52,4 @@ const getPosts = async (req: Request, res: Response) => {
   }
 };
 
-export default getPosts;
+export default getCourses;

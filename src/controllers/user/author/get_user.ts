@@ -1,4 +1,4 @@
-import User, { IUser } from "../../models/user";
+import User, { IUser } from "../../../models/user";
 import { Request, Response } from "express";
 
 const getUserById = async (req: Request, res: Response) => {

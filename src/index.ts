@@ -1,8 +1,12 @@
 import express, { Response } from "express";
 import mongoose from "mongoose";
 import userRouter from "./routes/user";
+import userAuthorRouter from "./routes/user/author";
 import postRouter from "./routes/post";
+import courseRouter from "./routes/course";
 import postAuthorRouter from "./routes/post/author";
+import courseAuthorRouter from "./routes/course/author";
+import videoRouter from "./routes/video";
 import categoryRouter from "./routes/category";
 import categoryAuthorRouter from "./routes/category/author";
 import authRouter from "./routes/auth";
@@ -14,6 +18,7 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import nocache from "nocache";
 import morgan from "morgan";
+import axios from "axios";
 
 const app = express();
 config();
@@ -66,12 +71,16 @@ app.get("/", (req, res: Response) => {
 //USER
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/courses", courseRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/upload", uploadRouter);
+app.use("/api/videos", videoRouter);
 
 //ADMIN
+app.use("/api/admin/users", userAuthorRouter);
+app.use("/api/admin/upload", uploadRouter);
 app.use("/api/admin/posts", postAuthorRouter);
+app.use("/api/admin/courses", courseAuthorRouter);
 app.use("/api/admin/categories", categoryAuthorRouter);
 
 app.get("/api/ping", (req, res: Response) => {
@@ -79,6 +88,31 @@ app.get("/api/ping", (req, res: Response) => {
     message: "pong",
   });
 });
+
+// Tự động cập nhât danh sách course
+let time_automatic =
+  parseInt(process.env.TIME_UPDATE_COURSE_AUTOMATIC ?? "") || 86400000;
+setInterval(async () => {
+  try {
+    const loginRes = await axios.post(`http://localhost:3000/api/auth/login`, {
+      email: process.env.EMAIL_ADMIN,
+      passwordHash: process.env.PASSWORD_ADMIN,
+      device_id: "admin nodejs express",
+    });
+    if (loginRes) {
+      await axios.get(
+        `http://localhost:3000/api/admin/courses/playLists?channelId=${process.env.channelId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginRes.data.access_token}`,
+          },
+        }
+      );
+    }
+  } catch (error) {
+    Log.error(error);
+  }
+}, time_automatic); //1h
 
 // catch 404 and forward to error handler
 app.use((req, res) => {

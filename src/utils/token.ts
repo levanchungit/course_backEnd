@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request } from "express";
 
@@ -15,3 +16,9 @@ export const getRoleFromReq = (req: Request): Partial<string> =>
 
 export const haveToken = (req: Request) =>
   Boolean(req.headers.authorization?.slice(7));
+
+export const hashPassword = async (password: string) => {
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
+};

@@ -1,21 +1,21 @@
 import { Request, Response } from "express";
 import Post from "../../models/post";
+import Log from "libraries/log";
 
-const getPosts = async (req: Request, res: Response) => {
+const getPostsPopular = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 5;
-    const sort = (req.query.sort as string) || "create_at";
+    const limit = parseInt(req.query.limit as string) || 10;
+    const sort = req.query.sort as string == "-1" ? -1 : 1;
     const startIndex = (page - 1) * limit;
-    const total = await Post.countDocuments();
 
-    const posts = await Post.find({}, "title slug -_id")
-      .sort(sort)
+    const posts = await Post.find({}, "title slug create_at -_id")
+      .sort({ create_at: sort})
       .limit(limit)
       .skip(startIndex);
 
     const results = {
-      total: total,
+      total: posts.length,
       page: page,
       limit: limit,
       results: posts,
@@ -23,9 +23,9 @@ const getPosts = async (req: Request, res: Response) => {
 
     return res.json(results);
   } catch (err) {
-    console.error(err);
+    Log.error(err);
     return res.sendStatus(500);
   }
 };
 
-export default getPosts;
+export default getPostsPopular;
