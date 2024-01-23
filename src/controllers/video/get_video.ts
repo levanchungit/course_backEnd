@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import Post, { IPost } from "../../models/post";
+import Video, { IVideo } from "../../models/video";
 
 const getVideo = async (req: Request, res: Response) => {
   try {
     const _id = req.params.id;
 
-    const post: IPost | null = await Post.findById(_id);
+    const video: IVideo | null = await Video.findById(_id);
     const result = {
-      result: post,
+      result: video,
     };
 
     return res.json(result);

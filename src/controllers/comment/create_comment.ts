@@ -8,27 +8,30 @@ import axios from "axios";
 const create = async (req: Request, res: Response) => {
   try {
     const { tokenCaptcha, type, email, name, content, slug } = req.body;
-
     const ipAddress = req.ip || req.connection.remoteAddress;
 
     const response = await axios.post(
       `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${tokenCaptcha}`
     );
 
+    //Không check slug
     if (response.data.success) {
-      if (!email || !content || !name || !slug || !type) {
+      if (!email || !content || !name || !type) {
         return res.status(404).json({
           message: "Required fields are missing",
         });
       }
 
       //get postId by slug
-      let postId: ObjectId | null = await Post.findOne({ slug: slug });
+      let postId;
+      if (slug) {
+        postId = (await Post.findOne({ slug: slug }))?.id;
+      }
 
       const comment: IComment = new Comment({
         _id: new ObjectId(),
         name: name,
-        postId: postId,
+        postId: postId ? postId : null,
         email: email,
         content: content,
         create_at: getNow(),
@@ -73,6 +76,7 @@ const create = async (req: Request, res: Response) => {
       });
     }
   } catch (err) {
+    console.error(err);
     return res.sendStatus(500);
   }
 };
