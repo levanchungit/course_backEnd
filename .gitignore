@@ -6,3 +6,4 @@
 .dockerignore
 Dockerfile
 package-lock.json
+keyfile.json

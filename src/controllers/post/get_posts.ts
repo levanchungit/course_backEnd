@@ -33,31 +33,20 @@ const getPosts = async (req: Request, res: Response) => {
       .sort(sortQuery)
       .limit(limit)
       .skip(startIndex)
-      .populate("categories")
+      .populate({
+        path: "categories",
+        select: "-_id -update_at -create_at -note -__v",
+      })
       .lean()
       .select("-_id -update_at -__v -status -note -author");
 
-    const postsWithCategoryNames = await Promise.all(
-      posts.map(async (post) => {
-        const categories = await Category.find({
-          _id: { $in: post.categories },
-        });
-        const categoryNames = categories.map((category) => category.name);
-
-        return {
-          ...post,
-          category_names: categoryNames,
-        };
-      })
-    );
-
-    const total = postsWithCategoryNames.length;
+    const total = posts.length;
 
     const results = {
       total: total,
       page: page,
       limit: limit,
-      results: postsWithCategoryNames,
+      results: posts,
     };
 
     return res.json(results);

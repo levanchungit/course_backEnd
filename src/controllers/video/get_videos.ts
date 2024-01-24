@@ -1,27 +1,38 @@
-// videosController.ts
 import { Request, Response } from "express";
-import { google } from "googleapis";
-import prompts from "prompts";
+import Video from "models/video";
 
 const getVideos = async (req: Request, res: Response) => {
   try {
-    const clientId = process.env.YOUTUBE_CLIENT_ID ?? "";
-    const clientSecret = process.env.YOUTUBE_CLIENT_SECRET ?? "";
-    const refreshToken = process.env.YOUTUBE_REFRESH_TOKEN ?? "";
-    const channelId = process.env.YOUTUBE_CHANNEL_ID ?? "";
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const sortDirection = (req.query.sort as string) || "asc";
+    const startIndex = (page - 1) * limit;
 
-    var service = google.youtube("v3");
-    //get list video of channel id
-    const response = await service.playlistItems.list({
-      auth: oauth2Client,
-      part: "snippet",
-      playlistId: channelId,
-      maxResults: 50,
-    });
+    let sortQuery = {};
+    if (sortDirection === "asc") {
+      sortQuery = { publishedAt: 1 };
+    } else if (sortDirection === "desc") {
+      sortQuery = { publishedAt: -1 };
+    }
 
-    res.status(200).json({ yt_refresh_token });
-  } catch (error: any) {
-    console.error("Error:", error.message);
+    const videos = await Video.find({})
+      .sort(sortQuery)
+      .limit(limit)
+      .skip(startIndex)
+      .select("-_id -__v");
+
+    const total = videos.length;
+
+    const results = {
+      total: total,
+      page: page,
+      limit: limit,
+      results: videos,
+    };
+
+    return res.json(results);
+  } catch (error) {
+    console.error("Error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
