@@ -22,6 +22,7 @@ const updateMe = async (req: Request, res: Response) => {
       avatar,
       facebook,
       introduction,
+      portfolio,
       name,
     } = req.body;
 
@@ -50,6 +51,9 @@ const updateMe = async (req: Request, res: Response) => {
       if (facebook) {
         user.author.facebook = facebook;
       }
+      if (portfolio) {
+        user.author.portfolio = portfolio;
+      }
       if (introduction) {
         user.author.introduction = introduction;
       }
@@ -59,6 +63,7 @@ const updateMe = async (req: Request, res: Response) => {
     }
     if (!user.author) {
       // create author
+      // @ts-ignore
       user.author = {
         instagram: instagram ? instagram : "temp",
         linkedin: linkedin ? linkedin : "temp",
@@ -66,6 +71,7 @@ const updateMe = async (req: Request, res: Response) => {
         avatar: avatar ? avatar : "temp",
         facebook: facebook ? facebook : "temp",
         introduction: introduction ? introduction : "temp",
+        portfolio: portfolio ? portfolio : "temp",
         name: name ? name : "temp",
         create_at: new Date(),
         update_at: new Date(),

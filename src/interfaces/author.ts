@@ -5,6 +5,7 @@ export type IAuthor = {
   instagram: string;
   facebook: string;
   linkedin: string;
+  portfolio: string;
   youtube: string;
   create_at: Date;
   update_at: Date;
@@ -17,6 +18,7 @@ export const Author = {
   instagram: { type: String, required: true },
   facebook: { type: String, required: true },
   linkedin: { type: String, required: true },
+  portfolio: { type: String, required: true },
   youtube: { type: String, required: true },
   create_at: { type: Date, required: true, default: Date.now },
   update_at: { type: Date, required: true, default: Date.now },

@@ -2,12 +2,11 @@
 import { Request, Response } from "express";
 import { google } from "googleapis";
 import Video from "models/video";
-import path from "path";
 
 const getYouTubeAuth = async () => {
-  const keyFile = path.resolve(__dirname, "../../../keyfile.json");
+  const keyFile = process.env.KEYFILE_JSON_CONTENT;
   return new google.auth.GoogleAuth({
-    keyFile,
+    keyFile: JSON.parse(JSON.stringify(keyFile)),
     scopes: "https://www.googleapis.com/auth/youtube.readonly",
   });
 };
