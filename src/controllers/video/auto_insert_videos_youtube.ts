@@ -4,9 +4,8 @@ import { google } from "googleapis";
 import Video from "models/video";
 
 const getYouTubeAuth = async () => {
-  const keyFile = process.env.KEYFILE_JSON_CONTENT;
   return new google.auth.GoogleAuth({
-    keyFile: JSON.parse(JSON.stringify(keyFile)),
+    credentials: JSON.parse(process.env.KEYFILE_JSON_CONTENT),
     scopes: "https://www.googleapis.com/auth/youtube.readonly",
   });
 };
