@@ -5,7 +5,9 @@ const getPost = async (req: Request, res: Response) => {
   try {
     const _id = req.params.id;
 
-    const post: IPost | null = await Post.findById(_id);
+    console.log(_id);
+
+    const post: IPost | null = await Post.findById(_id).populate("comments");
     const result = {
       result: post,
     };

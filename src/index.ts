@@ -10,6 +10,7 @@ import videoRouter from "./routes/video";
 import videoAuthorRouter from "./routes/video/author";
 import categoryRouter from "./routes/category";
 import commentRouter from "./routes/comment";
+import commentAuthorRouter from "./routes/comment/author";
 import categoryAuthorRouter from "./routes/category/author";
 import authRouter from "./routes/auth";
 import uploadRouter from "./routes/upload";
@@ -86,6 +87,8 @@ app.use("/api/admin/posts", postAuthorRouter);
 app.use("/api/admin/courses", courseAuthorRouter);
 app.use("/api/admin/categories", categoryAuthorRouter);
 app.use("/api/admin/videos", videoAuthorRouter);
+app.use("/api/admin/comments", commentAuthorRouter);
+
 
 app.get("/api/ping", (req, res: Response) => {
   res.status(200).json({

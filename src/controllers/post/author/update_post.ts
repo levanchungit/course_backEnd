@@ -17,10 +17,20 @@ const updatePost = async (req: Request, res: Response) => {
       publish_at,
       status,
       note,
+      statusComment,
     }: IPost = req.body;
 
-    //validate have update 
-    if (!title && !content && !cover_image && !author && !categories && !publish_at && !status && !note) {
+    //validate have update
+    if (
+      !title &&
+      !content &&
+      !cover_image &&
+      !author &&
+      !categories &&
+      !publish_at &&
+      !status &&
+      !note
+    ) {
       return res.status(400).json({ message: "No field to update" });
     }
 
@@ -49,7 +59,10 @@ const updatePost = async (req: Request, res: Response) => {
     if (note) {
       post.note = note;
     }
+    if (statusComment) {
+    }
 
+    post.statusComment = statusComment;
     post.update_at = new Date();
 
     await post.save();

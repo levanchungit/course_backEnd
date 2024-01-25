@@ -18,6 +18,7 @@ export type IPost = {
   create_at: Date;
   update_at: Date;
   comments: Schema.Types.ObjectId[];
+  statusComment: boolean;
   categories: string[];
   view: number;
   like: number;
@@ -41,6 +42,7 @@ const postSchema: Schema = new Schema({
   create_at: { type: Date },
   update_at: { type: Date },
   comments: { type: [Schema.Types.ObjectId], ref: "Comment" },
+  statusComment: { type: Boolean, default: true },
   categories: { type: [String], default: [], ref: "Category" },
   view: { type: Number, default: 0 },
   like: { type: Number, default: 0 },

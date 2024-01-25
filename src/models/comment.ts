@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb";
-import { FavoriteComment, IFavoriteComment } from "../interfaces/comment";
 import { Document, model, Schema } from "mongoose";
 
 /*********************TYPE & INTERFACE*****************************/
@@ -15,7 +14,7 @@ export type IComment = {
   create_at: Date;
   update_at: Date;
   ipAddress: string;
-  favorites: IFavoriteComment;
+  favorites: boolean;
   status: StatusCommentType;
   type: TypeCommentType;
   save(): unknown; //import không nó lỗi ts lúc save
@@ -35,14 +34,7 @@ const commentSchema: Schema = new Schema({
   update_at: { type: Date },
   ipAddress: { type: String, default: "" },
   status: { type: String, default: "public" },
-  favorites: {
-    type: FavoriteComment,
-    default: {
-      device_id: "",
-      create_at: Date.now(),
-      update_at: Date.now(),
-    },
-  },
+  favorites: { type: Boolean, default: false },
   type: { type: String, default: "comment" },
 });
 
