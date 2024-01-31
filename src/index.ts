@@ -100,26 +100,41 @@ let time_automatic =
   parseInt(process.env.TIME_UPDATE_COURSE_AUTOMATIC ?? "") || 86400000;
 setInterval(async () => {
   try {
-    const loginRes = await axios.post(`http://localhost:3000/api/auth/login`, {
-      email: process.env.EMAIL_ADMIN,
-      passwordHash: process.env.PASSWORD_ADMIN,
-      device_id: "admin nodejs express",
-    });
+    const loginRes = await axios.post(
+      `http://192.168.1.220:3000/api/auth/login`,
+      {
+        email: process.env.EMAIL_ADMIN,
+        passwordHash: process.env.PASSWORD_ADMIN,
+        device_id: "admin nodejs express",
+      }
+    );
     if (loginRes) {
-      await axios.get(
-        `http://localhost:3000/api/admin/courses/playLists?channelId=${process.env.channelId}`,
+      const a = await axios.get(
+        `http://192.168.1.220:3000/api/admin/courses/playLists?channelId=${process.env.YOUTUBE_CHANNEL_ID}`,
         {
           headers: {
             Authorization: `Bearer ${loginRes.data.access_token}`,
           },
         }
       );
+
+      const b = await axios.get(
+        `http://192.168.1.220:3000/api/admin/videos/autoInsertVideosYoutube`,
+        {
+          headers: {
+            Authorization: `Bearer ${loginRes.data.access_token}`,
+          },
+        }
+      );
+
+      console.log(a, b);
     }
   } catch (error) {
     Log.error(error);
   }
 }, time_automatic); //1h
 
+//FETCH BACKEND RENDER
 setInterval(async () => {
   try {
     const data = await axios.get(
