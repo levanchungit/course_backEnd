@@ -33,7 +33,7 @@ const getCourses = async (req: Request, res: Response) => {
 
         return {
           ...course,
-          category_name: categoryName,
+          category_names: categoryName,
         };
       })
     );

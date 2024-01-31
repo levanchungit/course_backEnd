@@ -1,4 +1,3 @@
-import { IItems, Items } from "../interfaces/comment";
 import { Document, model, Schema } from "mongoose";
 import slugify from "slugify";
 /*********************TYPE & INTERFACE*****************************/
@@ -10,13 +9,13 @@ export type ICourse = {
   cover_image: string;
   create_at: Date;
   update_at: Date;
-  items: IItems[];
+  items: [];
   category: string;
   category_name: string;
   status: StatusCourseType;
   slug: string;
   description: string;
-  publishedAt: Date;
+  publish_at: Date;
 };
 
 export type CourseTypeModel = ICourse & Document;
@@ -31,12 +30,12 @@ const courseSchema: Schema = new Schema({
   cover_image: { type: String },
   create_at: { type: Date },
   update_at: { type: Date },
-  items: { type: [Items], default: [] },
+  items: { type: [], default: [] },
   category: { type: String },
   status: { type: String, default: "public" },
   slug: { type: String },
   description: { type: String },
-  publishedAt: { type: Date },
+  publish_at: { type: Date },
 });
 
 courseSchema.pre("save", function (next) {

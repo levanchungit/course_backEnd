@@ -89,7 +89,6 @@ app.use("/api/admin/categories", categoryAuthorRouter);
 app.use("/api/admin/videos", videoAuthorRouter);
 app.use("/api/admin/comments", commentAuthorRouter);
 
-
 app.get("/api/ping", (req, res: Response) => {
   res.status(200).json({
     message: "pong",
@@ -120,6 +119,17 @@ setInterval(async () => {
     Log.error(error);
   }
 }, time_automatic); //1h
+
+setInterval(async () => {
+  try {
+    const data = await axios.get(`http://localhost:3000/api/ping`);
+    if (data) {
+      Log.info("FETCH BACKEND " + data.data.message);
+    }
+  } catch (error) {
+    Log.error(error);
+  }
+}, parseInt(process.env.TIME_UPDATE_FETCH_BACKEND ?? "") || 600000);
 
 // catch 404 and forward to error handler
 app.use((req, res) => {

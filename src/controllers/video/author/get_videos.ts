@@ -18,8 +18,7 @@ const getVideos = async (req: Request, res: Response) => {
     const videos = await Video.find({})
       .sort(sortQuery)
       .limit(limit)
-      .skip(startIndex)
-      .select("-_id -__v");
+      .skip(startIndex);
 
     const total = videos.length;
 

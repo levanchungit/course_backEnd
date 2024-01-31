@@ -19,6 +19,6 @@ router.get("/playLists", isAuthor, createCourseOrUpdatePlayListYoutube);
 router.get("/:id", isAuthor, get);
 router.post("/", isAuthor, create);
 router.put("/:id", isAuthor, update);
-router.delete("/delete_course/:id", isAuthor, deleteCourse);
+router.delete("/:id", isAuthor, deleteCourse);
 
 export default router;

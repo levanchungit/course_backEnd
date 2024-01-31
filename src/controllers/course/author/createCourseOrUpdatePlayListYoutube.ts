@@ -49,7 +49,7 @@ const createCourseOrUpdatePlayListYoutube = async (
           checkExistCourse.title = item.snippet.title;
           checkExistCourse.cover_image = item.snippet.thumbnails.maxres.url;
           checkExistCourse.description = item.snippet.description;
-          checkExistCourse.publishedAt = new Date(item.snippet.publishedAt);
+          checkExistCourse.publish_at = new Date(item.snippet.publishedAt);
           checkExistCourse.update_at = new Date(getNow());
           await checkExistCourse.save();
         } else {
@@ -58,7 +58,7 @@ const createCourseOrUpdatePlayListYoutube = async (
             idPlaylist: item.id,
             title: item.snippet.title,
             cover_image: item.snippet.thumbnails.maxres.url,
-            publishedAt: item.snippet.publishedAt,
+            publish_at: item.snippet.publishedAt,
             create_at: getNow(),
             update_at: getNow(),
             items: [],
@@ -84,11 +84,13 @@ const createCourseOrUpdatePlayListYoutube = async (
               });
               if (checkExistCourse) {
                 const checkExistItem = checkExistCourse.items.find(
-                  (item2) => item2.videoId === item1.snippet.resourceId.videoId
+                  (item2: any) =>
+                    item2.videoId === item1.snippet.resourceId.videoId
                 );
                 if (!checkExistItem) {
+                  // @ts-ignore
                   checkExistCourse.items.push({
-                    publishedAt: item1.snippet.publishedAt,
+                    publish_at: item1.snippet.publishedAt,
                     channelId: item1.snippet.channelId,
                     title: item1.snippet.title,
                     description: item1.snippet.description,

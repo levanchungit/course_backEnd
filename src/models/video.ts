@@ -1,13 +1,12 @@
 import { ObjectId } from "mongodb";
 import { IThumbnail, Thumbnails } from "../interfaces/comment";
 import { Document, model, Schema } from "mongoose";
-import slugify from "slugify";
 /*********************TYPE & INTERFACE*****************************/
 export type StatusVideoType = "publish" | "private" | "delete";
 
 export type IVideo = {
   _id: ObjectId;
-  publishedAt: Date;
+  publish_at: Date;
   channelId: string;
   title: string;
   description: string;
@@ -22,7 +21,7 @@ export type VideoTypeModel = IVideo & Document;
 
 const videoSchema: Schema = new Schema({
   _id: { type: Schema.Types.ObjectId, auto: true },
-  publishedAt: { type: Date, required: true, default: Date.now },
+  publish_at: { type: Date, required: true, default: Date.now },
   channelId: { type: String, required: true },
   title: { type: String, required: true },
   description: { type: String, required: true },

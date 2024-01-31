@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import { google } from "googleapis";
 import Video from "models/video";
+import { ObjectId } from "mongodb";
 
 const getYouTubeAuth = async () => {
   return new google.auth.GoogleAuth({
@@ -33,7 +34,8 @@ const getYouTubeVideos = async (auth, channelId) => {
 };
 
 const mapVideoDetails = (item) => ({
-  publishedAt: item.snippet.publishedAt,
+  _id: new ObjectId(),
+  publish_at: item.snippet.publishedAt,
   channelId: item.snippet.channelId,
   title: item.snippet.title,
   description: item.snippet.description,
@@ -47,9 +49,9 @@ const autoInsertVideosYoutube = async (req: Request, res: Response) => {
     const auth = await getYouTubeAuth();
     const channelId = process.env.YOUTUBE_CHANNEL_ID;
 
+    console.log(channelId);
     const videos = await getYouTubeVideos(auth, channelId);
     const videoDetails = videos.map(mapVideoDetails);
-
     await Video.deleteMany({});
     await Video.insertMany(videoDetails);
 
