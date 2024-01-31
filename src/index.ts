@@ -122,7 +122,7 @@ setInterval(async () => {
 
 setInterval(async () => {
   try {
-    const data = await axios.get(`http://localhost:3000/api/ping`);
+    const data = await axios.get(`http://localhost:10000/api/ping`);
     if (data) {
       Log.info("FETCH BACKEND " + data.data.message);
     }
