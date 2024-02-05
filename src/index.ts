@@ -101,7 +101,7 @@ let time_automatic =
 setInterval(async () => {
   try {
     const loginRes = await axios.post(
-      `http://192.168.1.220:3000/api/auth/login`,
+      `https://course-backend-alb3.onrender.com/api/auth/login`,
       {
         email: process.env.EMAIL_ADMIN,
         passwordHash: process.env.PASSWORD_ADMIN,
@@ -110,7 +110,7 @@ setInterval(async () => {
     );
     if (loginRes) {
       const a = await axios.get(
-        `http://192.168.1.220:3000/api/admin/courses/playLists?channelId=${process.env.YOUTUBE_CHANNEL_ID}`,
+        `https://course-backend-alb3.onrender.com/api/admin/courses/playLists?channelId=${process.env.YOUTUBE_CHANNEL_ID}`,
         {
           headers: {
             Authorization: `Bearer ${loginRes.data.access_token}`,
@@ -119,7 +119,7 @@ setInterval(async () => {
       );
 
       const b = await axios.get(
-        `http://192.168.1.220:3000/api/admin/videos/autoInsertVideosYoutube`,
+        `https://course-backend-alb3.onrender.com/api/admin/videos/autoInsertVideosYoutube`,
         {
           headers: {
             Authorization: `Bearer ${loginRes.data.access_token}`,
