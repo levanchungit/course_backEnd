@@ -7,6 +7,7 @@ const getVideos = async (req: Request, res: Response) => {
     const limit = parseInt(req.query.limit as string) || 10;
     const sortDirection = (req.query.sort as string) || "asc";
     const startIndex = (page - 1) * limit;
+    const total = await Video.countDocuments();
 
     let sortQuery = {};
     if (sortDirection === "asc") {
@@ -20,8 +21,6 @@ const getVideos = async (req: Request, res: Response) => {
       .limit(limit)
       .skip(startIndex)
       .select("-_id -__v");
-
-    const total = videos.length;
 
     const results = {
       total: total,

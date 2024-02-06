@@ -101,7 +101,7 @@ let time_automatic =
 setInterval(async () => {
   try {
     const loginRes = await axios.post(
-      `https://course-backend-alb3.onrender.com/api/auth/login`,
+      `${process.env.BASE_URL}/api/auth/login`,
       {
         email: process.env.EMAIL_ADMIN,
         passwordHash: process.env.PASSWORD_ADMIN,
@@ -110,7 +110,7 @@ setInterval(async () => {
     );
     if (loginRes) {
       const a = await axios.get(
-        `https://course-backend-alb3.onrender.com/api/admin/courses/playLists?channelId=${process.env.YOUTUBE_CHANNEL_ID}`,
+        `${process.env.BASE_URL}/api/admin/courses/playLists?channelId=${process.env.YOUTUBE_CHANNEL_ID}`,
         {
           headers: {
             Authorization: `Bearer ${loginRes.data.access_token}`,
@@ -119,7 +119,7 @@ setInterval(async () => {
       );
 
       const b = await axios.get(
-        `https://course-backend-alb3.onrender.com/api/admin/videos/autoInsertVideosYoutube`,
+        `${process.env.BASE_URL}/api/admin/videos/autoInsertVideosYoutube`,
         {
           headers: {
             Authorization: `Bearer ${loginRes.data.access_token}`,
@@ -138,7 +138,7 @@ setInterval(async () => {
 setInterval(async () => {
   try {
     const data = await axios.get(
-      `https://course-backend-alb3.onrender.com/api/ping`
+      `${process.env.BASE_URL}/api/ping`
     );
     if (data) {
       Log.info("FETCH BACKEND " + data.data.message);
