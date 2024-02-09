@@ -97,7 +97,7 @@ app.get("/api/ping", (req, res: Response) => {
 
 // Tự động cập nhât danh sách course
 let time_automatic =
-  parseInt(process.env.TIME_UPDATE_COURSE_AUTOMATIC ?? "") || 86400000;
+  parseInt(process.env.TIME_UPDATE_COURSE_AUTOMATIC ?? "") || 3600000;
 setInterval(async () => {
   try {
     const loginRes = await axios.post(
